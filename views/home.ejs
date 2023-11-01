@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+    <style>
+        .lists li{
+            list-style: none;
+        }
+
+        /* .lists{
+            display: flex;
+            flex-direction: column;
+        } */
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Todos list</h1>
+        <form action="/v1/create/todos" method="post" >
+            <label for="title">Title</label>
+            <input type="text" name="title">
+            <label for="description">Description</label>
+            <input type="text" name="description">
+            <button type="submit">Add to list</button>
+        </form>
+    </div>
+
+    <h2>Todo lists</h2>
+    <div class="lists">
+        <% if (locals.data) { %>
+           
+                <% data.forEach(element => { %>
+                    <li><%= element.title %></li> <span>----></span> <li> <%= element.description %></li><button onclick="deleteHandeler('<%= element._id %>')" >Delete</button>
+                   <% }) %>
+                   <br><br>
+                   <button onclick="deleteAllHandeler()">Delete All</button>
+        <% } %>
+    </div>
+
+    
+
+    <script>
+        async function deleteHandeler(_id){
+            console.log(_id);
+            fetch("http://localhost:3000/v1/delete/"+_id , {method:"DELETE"}).then(() => {console.log("Successfully delete all the data")}).catch((err)=>{console.log(err)})
+        }
+
+        async function deleteAllHandeler(){
+            fetch("http://localhost:3000/v1/delete/" , {method:"DELETE"}).then(() => {console.log("Successfully delete all the data")}).catch((err)=>{console.log(err)})
+        }
+    </script>
+</body>
+</html>
